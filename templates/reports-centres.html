@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Centres Reports - {{ block.super }}{% endblock %}
+
+{% block breadcrumb_items %}
+<li class="breadcrumb-item"><a href="{% url 'reports-centres' %}">Reports</a></li>
+<li class="breadcrumb-item active">Centres</li>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4">
+            <i class="bi bi-building"></i>
+            Centres Reports
+        </h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="bi bi-file-earmark-text"></i>
+                    Centres Reports
+                </h5>
+            </div>
+            <div class="card-body">
+                <p class="text-muted">This page will provide detailed reports and analytics for centres.</p>
+                <p>Features to be implemented:</p>
+                <ul>
+                    <li>Centre performance metrics</li>
+                    <li>Call volume analysis</li>
+                    <li>Operator efficiency reports</li>
+                    <li>Revenue tracking</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+

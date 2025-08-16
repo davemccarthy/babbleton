@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load duration_filters %}
+
+{% block title %}Delete Agent - {{ operator.fname }} {{ operator.sname }} - {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="admin-header">
+    <h2>Delete Agent</h2>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    🗑️ Confirm Deletion
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-danger">
+                    <h6 class="alert-heading">⚠️ Warning: This action cannot be undone!</h6>
+                    <p class="mb-0">You are about to permanently delete the agent <strong>{{ operator.fname }} {{ operator.sname }}</strong>.</p>
+                </div>
+                
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Agent Name</label>
+                            <input type="text" class="form-control" value="{{ operator.fname }} {{ operator.sname }}" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Identifier</label>
+                            <input type="text" class="form-control" value="{{ operator.identifier|default:'-' }}" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Centre</label>
+                            <input type="text" class="form-control" value="{{ operator.centre_name }}" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Language</label>
+                            <input type="text" class="form-control" value="{{ operator.language_name }}" readonly>
+                        </div>
+                    </div>
+                </div>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-flex gap-3">
+                        <button type="submit" class="btn btn-danger">
+                            🗑️ Delete Agent
+                        </button>
+                        <a href="{% url 'admin-operators' %}" class="btn btn-outline-secondary">
+                            ❌ Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Messages -->
+{% if messages %}
+<div class="row mt-4">
+    <div class="col-12">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {% if message.tags == 'success' %}✅{% elif message.tags == 'error' %}⚠️{% else %}ℹ️{% endif %}
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+{% endblock %}

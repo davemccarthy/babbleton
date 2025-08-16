@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% load duration_filters %}
+
+{% block title %}{% if operator %}Edit Agent - {{ operator.fname }} {{ operator.sname }}{% else %}Add New Agent{% endif %} - {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="admin-header">
+    <h2>{% if operator %}Edit Agent{% else %}Add New Agent{% endif %}</h2>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    {% if operator %}✏️ Edit Agent Details{% else %}➕ New Agent Information{% endif %}
+                </h5>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <!-- Basic Information -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h6 class="mb-0">👤 Basic Information</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="fname" class="form-label">First Name *</label>
+                                        <input type="text" class="form-control" id="fname" name="fname" 
+                                               value="{{ operator.fname|default:'' }}" 
+                                               placeholder="Enter first name" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="sname" class="form-label">Surname *</label>
+                                        <input type="text" class="form-control" id="sname" name="sname" 
+                                               value="{{ operator.sname|default:'' }}" 
+                                               placeholder="Enter surname" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="centreid" class="form-label">Centre *</label>
+                                        <select class="form-select" id="centreid" name="centreid" required>
+                                            <option value="">Choose the agent's centre...</option>
+                                            {% for centre in centres %}
+                                            <option value="{{ centre.id }}" 
+                                                    {% if operator.centreid == centre.id %}selected{% endif %}>
+                                                {{ centre.name }}
+                                            </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="langid" class="form-label">Language *</label>
+                                        <select class="form-select" id="langid" name="langid" required>
+                                            <option value="">Choose the agent's language...</option>
+                                            {% for language in languages %}
+                                            <option value="{{ language.id }}" 
+                                                    {% if operator.langid == language.id %}selected{% endif %}>
+                                                {{ language.name }}
+                                            </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Contact Information -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h6 class="mb-0">📞 Contact Information</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="email" name="email" 
+                                               value="{{ operator.email|default:'' }}" 
+                                               placeholder="agent@example.com">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="mobile" class="form-label">Mobile</label>
+                                        <input type="tel" class="form-control" id="mobile" name="mobile" 
+                                               value="{{ operator.mobile|default:'' }}" 
+                                               placeholder="+1 234 567 8900">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary">
+                            {% if operator %}💾 Update Agent{% else %}➕ Create Agent{% endif %}
+                        </button>
+                        <a href="{% url 'admin-operators' %}" class="btn btn-outline-secondary">
+                            ❌ Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Messages -->
+{% if messages %}
+<div class="row mt-4">
+    <div class="col-12">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {% if message.tags == 'success' %}✅{% elif message.tags == 'error' %}⚠️{% else %}ℹ️{% endif %}
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+{% endblock %}

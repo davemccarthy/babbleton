@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% load duration_filters %}
+
+{% block title %}Agents Administration - {{ block.super }}{% endblock %}
+
+{% block breadcrumb_items %}
+<li class="breadcrumb-item"><a href="{% url 'admin-operators' %}">Admin</a></li>
+<li class="breadcrumb-item active">Operators</li>
+{% endblock %}
+
+{% block content %}
+<div class="admin-header">
+    <a href="{% url 'admin-operators-create' %}" class="btn btn-primary">
+        ➕ Add New Agent
+    </a>
+</div>
+
+
+
+<!-- Operators Table -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    👥 Agents ({{ operators|length }})
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if operators %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Centre</th>
+                                <th>Language</th>
+                                <th>Identifier</th>
+                                <th>Calls</th>
+                                <th>Minutes</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for operator in operators %}
+                            <tr>
+                                <td><strong>{{ operator.id }}</strong></td>
+                                <td>
+                                    <strong>{{ operator.full_name }}</strong>
+                                </td>
+                                <td>
+                                    <span class="badge bg-info">{{ operator.centre_name }}</span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-success">{{ operator.language_name }}</span>
+                                </td>
+                                <td>
+                                    <code>{{ operator.identifier|default:"-" }}</code>
+                                </td>
+                                <td>
+                                    <span class="badge bg-primary">{{ operator.calltotal|default:"0" }}</span>
+                                </td>
+                                <td>
+                                    {% if operator.callduration %}
+                                        <span class="badge bg-info">{{ operator.callduration|to_minutes }}m</span>
+                                    {% else %}
+                                        <span class="text-muted">0m</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="{% url 'admin-operators-edit' operator.id %}" class="btn btn-outline-warning" title="Edit Agent">
+                                            ✏️
+                                        </a>
+                                        <a href="{% url 'admin-operators-delete' operator.id %}" class="btn btn-outline-danger" title="Delete Agent">
+                                            🗑️
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-4">
+                    👤❌
+                    <h5 class="text-muted mt-3">No agents found</h5>
+                    <p class="text-muted">
+                        {% if search_query or centre_filter %}
+                        Try adjusting your search criteria or 
+                        <a href="{% url 'admin-operators' %}">clear the filters</a>.
+                        {% else %}
+                        <button type="button" class="btn btn-primary">
+                            ➕ Add your first agent
+                        </button>
+                        {% endif %}
+                    </p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Messages -->
+{% if messages %}
+<div class="row mt-4">
+    <div class="col-12">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {% if message.tags == 'success' %}✅{% elif message.tags == 'error' %}⚠️{% else %}ℹ️{% endif %}
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Friends Reports - {{ block.super }}{% endblock %}
+
+{% block breadcrumb_items %}
+<li class="breadcrumb-item"><a href="{% url 'reports-friends' %}">Reports</a></li>
+<li class="breadcrumb-item active">Friends</li>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4">
+            <i class="bi bi-person-lines-fill"></i>
+            Friends Reports
+        </h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="bi bi-file-earmark-text"></i>
+                    Friends Reports
+                </h5>
+            </div>
+            <div class="card-body">
+                <p class="text-muted">This page will provide reports related to friends and connections.</p>
+                <p>Features to be implemented:</p>
+                <ul>
+                    <li>Friend activity reports</li>
+                    <li>Connection analytics</li>
+                    <li>Social network metrics</li>
+                    <li>Engagement tracking</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+

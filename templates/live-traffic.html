@@ -1,0 +1,283 @@
+{% extends 'base.html' %}
+
+{% block title %}Live Traffic - {{ block.super }}{% endblock %}
+
+{% block breadcrumb_items %}
+<li class="breadcrumb-item"><a href="{% url 'live-traffic' %}">Live</a></li>
+<li class="breadcrumb-item active">Traffic</li>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>
+                <i class="bi bi-graph-up"></i>
+                Live Traffic Monitoring
+            </h1>
+            <div class="d-flex gap-2">
+                <button class="btn btn-outline-primary btn-sm">
+                    <i class="bi bi-arrow-clockwise"></i> Refresh
+                </button>
+                <button class="btn btn-outline-secondary btn-sm">
+                    <i class="bi bi-gear"></i> Settings
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Traffic Overview Cards -->
+<div class="row mb-4">
+    <div class="col-md-3 mb-3">
+        <div class="card">
+            <div class="card-body text-center">
+                <h4 class="text-success">24</h4>
+                <p class="text-muted mb-0">Active Calls</p>
+                <small class="text-success">
+                    <i class="bi bi-arrow-up"></i> +3 in last 5 min
+                </small>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="card">
+            <div class="card-body text-center">
+                <h4 class="text-primary">156</h4>
+                <p class="text-muted mb-0">Calls Today</p>
+                <small class="text-primary">
+                    <i class="bi bi-arrow-up"></i> +12% vs yesterday
+                </small>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="card">
+            <div class="card-body text-center">
+                <h4 class="text-warning">8</h4>
+                <p class="text-muted mb-0">Waiting Calls</p>
+                <small class="text-warning">
+                    <i class="bi bi-arrow-down"></i> -2 in last 5 min
+                </small>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="card">
+            <div class="card-body text-center">
+                <h4 class="text-info">42</h4>
+                <p class="text-muted mb-0">Available Operators</p>
+                <small class="text-info">
+                    <i class="bi bi-dash"></i> No change
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Traffic by Centre -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="bi bi-building"></i>
+                    Traffic by Centre
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Centre</th>
+                                <th>Active Calls</th>
+                                <th>Waiting</th>
+                                <th>Operators</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <strong>Centre A</strong>
+                                    <br><small class="text-muted">London</small>
+                                </td>
+                                <td>
+                                    <span class="badge bg-success">8</span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-warning">3</span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-info">12/15</span>
+                                </td>
+                                <td>
+                                    <span class="status-indicator status-online"></span>
+                                    Online
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-eye"></i> View
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>Centre B</strong>
+                                    <br><small class="text-muted">Manchester</small>
+                                </td>
+                                <td>
+                                    <span class="badge bg-success">6</span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-warning">2</span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-info">8/10</span>
+                                </td>
+                                <td>
+                                    <span class="status-indicator status-online"></span>
+                                    Online
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-eye"></i> View
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>Centre C</strong>
+                                    <br><small class="text-muted">Birmingham</small>
+                                </td>
+                                <td>
+                                    <span class="badge bg-success">4</span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-warning">1</span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-info">6/8</span>
+                                </td>
+                                <td>
+                                    <span class="status-indicator status-warning"></span>
+                                    High Load
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-eye"></i> View
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>Centre D</strong>
+                                    <br><small class="text-muted">Leeds</small>
+                                </td>
+                                <td>
+                                    <span class="badge bg-success">3</span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-warning">0</span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-info">4/6</span>
+                                </td>
+                                <td>
+                                    <span class="status-indicator status-online"></span>
+                                    Online
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-eye"></i> View
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Calls -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="bi bi-clock-history"></i>
+                    Recent Calls
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Caller</th>
+                                <th>Centre</th>
+                                <th>Operator</th>
+                                <th>Duration</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>14:32:15</td>
+                                <td>+44 7911 123456</td>
+                                <td>Centre A</td>
+                                <td>John Smith</td>
+                                <td>05:23</td>
+                                <td><span class="badge bg-success">Completed</span></td>
+                            </tr>
+                            <tr>
+                                <td>14:30:42</td>
+                                <td>+44 7922 654321</td>
+                                <td>Centre B</td>
+                                <td>Sarah Johnson</td>
+                                <td>03:45</td>
+                                <td><span class="badge bg-success">Completed</span></td>
+                            </tr>
+                            <tr>
+                                <td>14:29:18</td>
+                                <td>+44 7933 789012</td>
+                                <td>Centre C</td>
+                                <td>Mike Wilson</td>
+                                <td>--:--</td>
+                                <td><span class="badge bg-primary">In Progress</span></td>
+                            </tr>
+                            <tr>
+                                <td>14:28:55</td>
+                                <td>+44 7944 345678</td>
+                                <td>Centre A</td>
+                                <td>Lisa Brown</td>
+                                <td>--:--</td>
+                                <td><span class="badge bg-warning">Waiting</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Auto-refresh functionality
+    setInterval(function() {
+        // In a real implementation, this would fetch updated data via AJAX
+        console.log('Refreshing traffic data...');
+    }, 30000); // Refresh every 30 seconds
+</script>
+{% endblock %}
+
