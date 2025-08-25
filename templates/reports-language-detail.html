@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load duration_filters %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="bi bi-people"></i>
+                        Agent Report - {{ centre.name }} - {{ language.name }}
+                    </h5>
+                    <a href="{% url 'reports-centre-detail' centre.id %}?start_date={{ start_date }}&end_date={{ end_date }}" class="btn btn-outline-secondary btn-sm">
+                        <i class="bi bi-arrow-left"></i>
+                        Back to {{ centre.name }}
+                    </a>
+                </div>
+                
+                <div class="card-body">
+                    <!-- Date Range Info -->
+                    <div class="alert alert-info">
+                        <strong>Date Range:</strong> {{ start_date }} to {{ end_date }}
+                    </div>
+                    
+                    {% if agents_data %}
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Agent</th>
+                                        <th>Sessions</th>
+                                        <th>Calls</th>
+                                        <th>Minutes</th>
+                                        <th>ACD</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for agent in agents_data %}
+                                        <tr>
+                                            <td>
+                                                <a href="{% url 'reports-agent-detail' centre.id language.id agent.operator_id %}?start_date={{ start_date }}&end_date={{ end_date }}" class="text-decoration-none">
+                                                    <strong>{{ agent.fname }} {{ agent.sname }}</strong>
+                                                </a>
+                                            </td>
+                                            <td>{{ agent.sessions_count }}</td>
+                                            <td>{{ agent.total_calls }}</td>
+                                            <td>{{ agent.total_minutes_seconds|seconds_to_minutes }}</td>
+                                            <td>{{ agent.acd_seconds|format_acd }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Summary -->
+                        {% if agents_data|length > 1 %}
+                            <div class="card mt-3">
+                                <div class="card-header">
+                                    <h6 class="mb-0">Report Summary</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-borderless">
+                                            <tbody>
+                                                <tr>
+                                                    <td width="20%"><strong>Date Range:</strong></td>
+                                                    <td width="30%">{{ start_date }} to {{ end_date }}</td>
+                                                    <td width="20%"><strong>Agents:</strong></td>
+                                                    <td width="30%">{{ agents_data|length }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Total Sessions:</strong></td>
+                                                    <td>{{ total_sessions }}</td>
+                                                    <td><strong>Total Calls:</strong></td>
+                                                    <td>{{ total_calls }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Total Minutes:</strong></td>
+                                                    <td>{{ total_minutes|seconds_to_minutes }}</td>
+                                                    <td><strong>Overall ACD:</strong></td>
+                                                    <td>{{ overall_acd|format_acd }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="bi bi-inbox display-1 text-muted"></i>
+                            <h4 class="text-muted mt-3">No Data Found</h4>
+                            <p class="text-muted">No agents found for the selected criteria.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if administrator %}Edit Administrator - {{ administrator.name }}{% else %}Add New Administrator{% endif %} - {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="admin-header">
+    <h2>{% if administrator %}Edit Administrator{% else %}Add New Administrator{% endif %}</h2>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    {% if administrator %}✏️ Edit Administrator Details{% else %}➕ New Administrator Information{% endif %}
+                </h5>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <!-- Basic Information -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h6 class="mb-0">👤 Basic Information</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="name" class="form-label">Name *</label>
+                                        <input type="text" class="form-control" id="name" name="name" 
+                                               value="{{ administrator.name|default:'' }}" 
+                                               placeholder="Enter administrator name" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="centreid" class="form-label">Centre *</label>
+                                        <select class="form-select" id="centreid" name="centreid" required>
+                                            <option value="">Choose the administrator's centre...</option>
+                                            {% for centre in centres %}
+                                            <option value="{{ centre.id }}" 
+                                                    {% if administrator.centreid == centre.id %}selected{% endif %}>
+                                                {{ centre.name }}
+                                            </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="username" class="form-label">Username *</label>
+                                        <input type="text" class="form-control" id="username" name="username" 
+                                               value="{{ administrator.username|default:'' }}" 
+                                               placeholder="Enter username" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="password" class="form-label">Password *</label>
+                                        <input type="password" class="form-control" id="password" name="password" 
+                                               value="{{ administrator.password|default:'' }}" 
+                                               placeholder="Enter password" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Contact Information -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h6 class="mb-0">📞 Contact Information</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="email" name="email" 
+                                               value="{{ administrator.email|default:'' }}" 
+                                               placeholder="admin@example.com">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="mobile" class="form-label">Mobile</label>
+                                        <input type="tel" class="form-control" id="mobile" name="mobile" 
+                                               value="{{ administrator.mobile|default:'' }}" 
+                                               placeholder="+1 234 567 8900">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary">
+                            {% if administrator %}💾 Update Administrator{% else %}➕ Create Administrator{% endif %}
+                        </button>
+                        <a href="{% url 'admin-administrators' %}" class="btn btn-outline-secondary">
+                            ❌ Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Messages -->
+{% if messages %}
+<div class="row mt-4">
+    <div class="col-12">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {% if message.tags == 'success' %}✅{% elif message.tags == 'error' %}⚠️{% else %}ℹ️{% endif %}
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+{% endblock %}

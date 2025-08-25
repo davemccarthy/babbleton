@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ page_title }} - {{ block.super }}{% endblock %}
+
+{% block breadcrumb_items %}
+<li class="breadcrumb-item"><a href="{% url 'admin-payments' %}">Admin</a></li>
+<li class="breadcrumb-item"><a href="{% url 'admin-payments' %}">Payments</a></li>
+<li class="breadcrumb-item active">{% if payplan %}Edit{% else %}Create{% endif %}</li>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="bi bi-credit-card"></i>
+                    {% if payplan %}Edit Payplan{% else %}Create New Payplan{% endif %}
+                </h5>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="langid" class="form-label">Language *</label>
+                                <select name="langid" id="langid" class="form-select" required>
+                                    <option value="">Select Language</option>
+                                    {% for language in languages %}
+                                        <option value="{{ language.id }}" {% if payplan and payplan.langid == language.id %}selected{% endif %}>
+                                            {{ language.name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="centreid" class="form-label">Centre</label>
+                                <select name="centreid" id="centreid" class="form-select">
+                                    <option value="0" {% if payplan and payplan.centreid == 0 %}selected{% endif %}>
+                                        Global (Language Only)
+                                    </option>
+                                    {% for centre in centres %}
+                                        <option value="{{ centre.id }}" {% if payplan and payplan.centreid == centre.id %}selected{% endif %}>
+                                            {{ centre.name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                                <div class="form-text">
+                                    Select "Global" for language-wide payplan, or specific centre for centre-specific payplan.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="acd" class="form-label">ACD (Average Call Duration)</label>
+                                <input type="number" name="acd" id="acd" class="form-control" 
+                                       value="{% if payplan %}{{ payplan.acd }}{% else %}0{% endif %}" 
+                                       min="0" step="1">
+                                <div class="form-text">
+                                    Average call duration in minutes.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="rate" class="form-label">Rate ($)</label>
+                                <input type="number" name="rate" id="rate" class="form-control" 
+                                       value="{% if payplan %}{{ payplan.rate }}{% else %}0.00{% endif %}" 
+                                       min="0" step="0.01">
+                                <div class="form-text">
+                                    Rate per minute in dollars.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'admin-payments' %}" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i>
+                            Cancel
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check"></i>
+                            {% if payplan %}Update{% else %}Create{% endif %} Payplan
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'thedjangolook/base.html' %}
+
+{% block title %}Delete Agent - Django Look{% endblock %}
+
+{% block breadcrumb %}
+<div class="breadcrumb">
+    <a href="{% url 'thedjangolook:agent_list' %}">Agents</a> &gt;
+    <a href="{% url 'thedjangolook:agent_detail' agent.id %}">{{ agent.fname }} {{ agent.sname }}</a> &gt;
+    Delete
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        Confirm Deletion
+    </div>
+    <div class="card-body">
+        <h3>Are you sure you want to delete this agent?</h3>
+        
+        <div style="background: #f8f9fa; padding: 20px; border-radius: 4px; margin: 20px 0;">
+            <h4>{{ agent.fname }} {{ agent.sname }}</h4>
+            <p><strong>Identifier:</strong> {{ agent.identifier|default:"Not specified" }}</p>
+            <p><strong>Email:</strong> {{ agent.email|default:"Not specified" }}</p>
+            <p><strong>Status:</strong> 
+                <span class="status-badge status-{{ agent.status|default:'oos' }}">
+                    {% if agent.status == 'ins' %}In Service
+                    {% elif agent.status == 'sus' %}Suspended
+                    {% elif agent.status == 'oos' %}Out of Service
+                    {% else %}{{ agent.status|default:"Out of Service" }}{% endif %}
+                </span>
+            </p>
+        </div>
+        
+        <p><strong>Warning:</strong> This action cannot be undone. All data associated with this agent will be permanently deleted.</p>
+        
+        <form method="post" style="margin-top: 20px;">
+            {% csrf_token %}
+            <div style="display: flex; gap: 10px;">
+                <button type="submit" class="btn btn-danger">Yes, Delete Agent</button>
+                <a href="{% url 'thedjangolook:agent_detail' agent.id %}" class="btn btn-warning">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -2,44 +2,93 @@
 
 {% block title %}Administrators Administration - {{ block.super }}{% endblock %}
 
-{% block breadcrumb_items %}
-<li class="breadcrumb-item"><a href="{% url 'admin-administrators' %}">Admin</a></li>
-<li class="breadcrumb-item active">Administrators</li>
-{% endblock %}
-
 {% block content %}
-<div class="row">
+<div class="admin-header">
+    <a href="{% url 'admin-administrators-create' %}" class="btn btn-primary">
+        ➕ Add New Administrator
+    </a>
+</div>
+
+<!-- Messages -->
+{% if messages %}
+<div class="row mb-4">
     <div class="col-12">
-        <h1 class="mb-4">
-            <i class="bi bi-shield-check"></i>
-            Administrators Administration
-        </h1>
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {% if message.tags == 'success' %}✅{% elif message.tags == 'error' %}⚠️{% else %}ℹ️{% endif %}
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endfor %}
     </div>
 </div>
+{% endif %}
 
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-header">
                 <h5 class="mb-0">
-                    <i class="bi bi-gear"></i>
-                    Administrators Management
+                    👥 Administrators ({{ administrators|length }})
                 </h5>
             </div>
             <div class="card-body">
-                <p class="text-muted">This page will provide administrator account management functionality.</p>
-                <p>Features to be implemented:</p>
-                <ul>
-                    <li>Administrator account creation</li>
-                    <li>Permission management</li>
-                    <li>Access logs</li>
-                    <li>Security settings</li>
-                </ul>
+                {% if administrators %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Centre</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Mobile</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for admin in administrators %}
+                            <tr>
+                                <td>{{ admin.id }}</td>
+                                <td>{{ admin.name|default:'-' }}</td>
+                                <td>{{ admin.centre_name|default:'-' }}</td>
+                                <td>{{ admin.username|default:'-' }}</td>
+                                <td>{{ admin.email|default:'-' }}</td>
+                                <td>{{ admin.mobile|default:'-' }}</td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="{% url 'admin-administrators-edit' admin.id %}" class="btn btn-outline-warning" title="Edit Administrator">
+                                            ✏️
+                                        </a>
+                                        <a href="{% url 'admin-administrators-delete' admin.id %}" class="btn btn-outline-danger" title="Delete Administrator">
+                                            🗑️
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-5">
+                    <div class="mb-3">
+                        <span style="font-size: 3rem;">👥</span>
+                    </div>
+                    <h5 class="text-muted">No Administrators Found</h5>
+                    <p class="text-muted mb-4">Get started by adding your first administrator.</p>
+                    <a href="{% url 'admin-administrators-create' %}" class="btn btn-primary">
+                        ➕ Add your first administrator
+                    </a>
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>
 </div>
 {% endblock %}
+
 
 
 

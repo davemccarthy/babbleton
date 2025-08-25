@@ -97,7 +97,7 @@
             width: var(--sidebar-width);
             background: var(--bg-sidebar);
             position: fixed;
-            left: 0;
+            right: 0;
             top: 0;
             height: 100vh;
             z-index: 1000;
@@ -174,7 +174,7 @@
         /* Main Content */
         .main-content {
             flex: 1;
-            margin-left: var(--sidebar-width);
+            margin-right: var(--sidebar-width);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -423,6 +423,19 @@
             background: var(--bg-white);
         }
         
+        .form-group {
+            margin-right: 8px;
+        }
+        
+        .g-3 {
+            --bs-gutter-x: 1.5rem;
+            --bs-gutter-y: 1.5rem;
+        }
+        
+        .mb-3 {
+            margin-right: 8px;
+        }
+        
         /* Enhanced Select Styling */
         .form-select {
             background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
@@ -558,7 +571,7 @@
         /* Responsive Design */
         @media (max-width: 1024px) {
             .sidebar {
-                transform: translateX(-100%);
+                transform: translateX(100%);
             }
 
             .sidebar.active {
@@ -566,7 +579,7 @@
             }
 
             .main-content {
-                margin-left: 0;
+                margin-right: 0;
             }
 
             .sidebar-toggle {
@@ -630,6 +643,48 @@
         ::-webkit-scrollbar-thumb:hover {
             background: var(--gray-400);
         }
+
+        /* Totals Cards Styling */
+        div.totals {
+            height: 100px;
+            margin: 0 auto;
+        }
+
+        div.total {
+            border-radius: 25px;
+            background: white;
+            padding: 20px;
+            width: 11%;
+            height: 80px;
+            border: 3px solid #5F9EA0;
+            border-top: 30px solid #5F9EA0;
+            text-align: center;
+            float: left;
+            margin: 3px;
+            position: relative;
+        }
+
+        h3.total {
+            color: white;
+            text-align: center;
+            font-size: 12px;
+            line-height: 30px;
+            height: 30px;
+            margin: 0;
+            padding: 0;
+            position: absolute;
+            top: -28px;
+            left: 0;
+            right: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        p.total {
+            font-size: 18px;
+            margin-top: -12px;
+        }
     </style>
     
     {% block extra_css %}{% endblock %}
@@ -639,7 +694,7 @@
         <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <a href="{% url 'dashboard' %}" class="sidebar-brand">
+                <a href="{% url 'live-traffic' %}" class="sidebar-brand">
                     Babbleton
                 </a>
             </div>
@@ -718,7 +773,7 @@
                     <button class="sidebar-toggle" onclick="toggleSidebar()">
                         ☰
                     </button>
-                    <h1 class="page-title">{% block page_title %}{{ page_title|default:"Dashboard" }}{% endblock %}</h1>
+                    <h1 class="page-title">{% block page_title %}{{ page_title|default:"Live Traffic" }}{% endblock %}</h1>
                 </div>
                 
                 <div class="topbar-right">

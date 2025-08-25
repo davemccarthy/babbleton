@@ -1,0 +1,104 @@
+{% extends 'thedjangolook/base.html' %}
+
+{% block title %}Agents - Django Look{% endblock %}
+
+{% block breadcrumb %}
+<div class="breadcrumb">
+    <a href="{% url 'thedjangolook:agent_list' %}">Agents</a>
+</div>
+{% endblock %}
+
+{% block content %}
+<form method="get" class="search-form">
+    <div class="form-group">
+        <label for="search">Search Agents:</label>
+        <input type="text" id="search" name="search" class="form-control" 
+               value="{{ search_query }}" placeholder="Search by name, identifier, or email...">
+    </div>
+    <button type="submit" class="btn btn-primary">Search</button>
+    {% if search_query %}
+        <a href="{% url 'thedjangolook:agent_list' %}" class="btn btn-warning">Clear</a>
+    {% endif %}
+</form>
+
+<div class="actions">
+    <a href="{% url 'thedjangolook:agent_create' %}" class="btn btn-success">Add New Agent</a>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        Agent List
+    </div>
+    <div class="card-body">
+        {% if page_obj %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Identifier</th>
+                        <th>Centre</th>
+                        <th>Language</th>
+                        <th>Status</th>
+                        <th>Contact</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for agent in page_obj %}
+                    <tr>
+                        <td>
+                            <strong>{{ agent.fname }} {{ agent.sname }}</strong>
+                        </td>
+                        <td>{{ agent.identifier|default:"-" }}</td>
+                        <td>{{ agent.centre_name }}</td>
+                        <td>{{ agent.language_name }}</td>
+                        <td>
+                            <span class="status-badge status-{{ agent.status|default:'oos' }}">
+                                {% if agent.status == 'ins' %}In Service
+                                {% elif agent.status == 'sus' %}Suspended
+                                {% elif agent.status == 'oos' %}Out of Service
+                                {% else %}{{ agent.status|default:"Out of Service" }}{% endif %}
+                            </span>
+                        </td>
+                        <td>
+                            {% if agent.email %}
+                                <div>{{ agent.email }}</div>
+                            {% endif %}
+                            {% if agent.mobile %}
+                                <div>{{ agent.mobile }}</div>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'thedjangolook:agent_detail' agent.id %}" class="btn btn-primary btn-sm">View</a>
+                            <a href="{% url 'thedjangolook:agent_update' agent.id %}" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="{% url 'thedjangolook:agent_delete' agent.id %}" class="btn btn-danger btn-sm">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+            <!-- Pagination -->
+            {% if page_obj.has_other_pages %}
+            <div style="margin-top: 20px; display: flex; justify-content: center; align-items: center; gap: 10px;">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1{% if search_query %}&search={{ search_query }}{% endif %}" class="btn btn-primary btn-sm">First</a>
+                    <a href="?page={{ page_obj.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}" class="btn btn-primary btn-sm">Previous</a>
+                {% endif %}
+                
+                <span style="margin: 0 10px;">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                </span>
+                
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}" class="btn btn-primary btn-sm">Next</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}{% if search_query %}&search={{ search_query }}{% endif %}" class="btn btn-primary btn-sm">Last</a>
+                {% endif %}
+            </div>
+            {% endif %}
+        {% else %}
+            <p>No agents found.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

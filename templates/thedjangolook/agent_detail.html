@@ -1,0 +1,84 @@
+{% extends 'thedjangolook/base.html' %}
+
+{% block title %}{{ agent.fname }} {{ agent.sname }} - Django Look{% endblock %}
+
+{% block breadcrumb %}
+<div class="breadcrumb">
+    <a href="{% url 'thedjangolook:agent_list' %}">Agents</a> &gt;
+    {{ agent.fname }} {{ agent.sname }}
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        Agent Details
+    </div>
+    <div class="card-body">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+            <div>
+                <h3>Personal Information</h3>
+                <table class="table">
+                    <tr>
+                        <td><strong>Name:</strong></td>
+                        <td>{{ agent.fname }} {{ agent.sname }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Identifier:</strong></td>
+                        <td>{{ agent.identifier|default:"Not specified" }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Status:</strong></td>
+                        <td>
+                            <span class="status-badge status-{{ agent.status|default:'oos' }}">
+                                {% if agent.status == 'ins' %}In Service
+                                {% elif agent.status == 'sus' %}Suspended
+                                {% elif agent.status == 'oos' %}Out of Service
+                                {% else %}{{ agent.status|default:"Out of Service" }}{% endif %}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Email:</strong></td>
+                        <td>{{ agent.email|default:"Not specified" }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Mobile:</strong></td>
+                        <td>{{ agent.mobile|default:"Not specified" }}</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div>
+                <h3>Assignment Information</h3>
+                <table class="table">
+                    <tr>
+                        <td><strong>Centre:</strong></td>
+                        <td>{{ centre.name|default:"Unknown" }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Language:</strong></td>
+                        <td>{{ language.name|default:"Unknown" }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Created:</strong></td>
+                        <td>{{ agent.creation|date:"F j, Y, g:i a"|default:"Not specified" }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Last Accessed:</strong></td>
+                        <td>{{ agent.accessed|date:"F j, Y, g:i a"|default:"Never" }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        
+
+        
+        <div style="margin-top: 30px; display: flex; gap: 10px;">
+            <a href="{% url 'thedjangolook:agent_update' agent.id %}" class="btn btn-warning">Edit Agent</a>
+            <a href="{% url 'thedjangolook:agent_delete' agent.id %}" class="btn btn-danger">Delete Agent</a>
+            <a href="{% url 'thedjangolook:agent_list' %}" class="btn btn-primary">Back to List</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

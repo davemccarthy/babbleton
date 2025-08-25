@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load duration_filters %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="bi bi-person"></i>
+                        Session Report - {{ operator.fname }} {{ operator.sname }}
+                    </h5>
+                    <a href="{% url 'reports-language-detail' centre.id language.id %}?start_date={{ start_date }}&end_date={{ end_date }}" class="btn btn-outline-secondary btn-sm">
+                        <i class="bi bi-arrow-left"></i>
+                        Back to {{ language.name }}
+                    </a>
+                </div>
+                
+                <div class="card-body">
+                    <!-- Date Range Info -->
+                    <div class="alert alert-info">
+                        <strong>Date Range:</strong> {{ start_date }} to {{ end_date }} | 
+                        <strong>Centre:</strong> {{ centre.name }} | 
+                        <strong>Language:</strong> {{ language.name }}
+                    </div>
+                    
+                    {% if sessions_data %}
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Session</th>
+                                        <th>Start</th>
+                                        <th>Duration</th>
+                                        <th>Device</th>
+                                        <th>Calls</th>
+                                        <th>Minutes</th>
+                                        <th>ACD</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for session in sessions_data %}
+                                        <tr>
+                                            <td>
+                                                <strong>{{ session.session_id }}</strong>
+                                            </td>
+                                            <td>{{ session.start|date:"Y-m-d H:i:s" }}</td>
+                                            <td>{{ session.duration_seconds|format_duration }}</td>
+                                            <td>{{ session.device_name }}</td>
+                                            <td>{{ session.calltotal }}</td>
+                                            <td>{{ session.callduration_seconds|seconds_to_minutes }}</td>
+                                            <td>{{ session.acd_seconds|format_acd }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Summary -->
+                        {% if sessions_data|length > 1 %}
+                            <div class="card mt-3">
+                                <div class="card-header">
+                                    <h6 class="mb-0">Report Summary</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-borderless">
+                                            <tbody>
+                                                <tr>
+                                                    <td width="20%"><strong>Date Range:</strong></td>
+                                                    <td width="30%">{{ start_date }} to {{ end_date }}</td>
+                                                    <td width="20%"><strong>Sessions:</strong></td>
+                                                    <td width="30%">{{ sessions_data|length }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Total Calls:</strong></td>
+                                                    <td>{{ total_calls }}</td>
+                                                    <td><strong>Total Minutes:</strong></td>
+                                                    <td>{{ total_minutes|seconds_to_minutes }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Overall ACD:</strong></td>
+                                                    <td>{{ overall_acd|format_acd }}</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="bi bi-inbox display-1 text-muted"></i>
+                            <h4 class="text-muted mt-3">No Data Found</h4>
+                            <p class="text-muted">No sessions found for {{ operator.fname }} {{ operator.sname }} in the selected criteria.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

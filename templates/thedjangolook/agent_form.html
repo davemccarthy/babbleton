@@ -1,0 +1,109 @@
+{% extends 'thedjangolook/base.html' %}
+
+{% block title %}{% if agent %}Edit Agent{% else %}Create Agent{% endif %} - Django Look{% endblock %}
+
+{% block breadcrumb %}
+<div class="breadcrumb">
+    <a href="{% url 'thedjangolook:agent_list' %}">Agents</a> &gt;
+    {% if agent %}Edit Agent{% else %}Create Agent{% endif %}
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        {% if agent %}Edit Agent{% else %}Create New Agent{% endif %}
+    </div>
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div class="form-group">
+                    <label for="fname">First Name *</label>
+                    <input type="text" id="fname" name="fname" class="form-control" 
+                           value="{{ agent.fname|default:'' }}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="sname">Last Name *</label>
+                    <input type="text" id="sname" name="sname" class="form-control" 
+                           value="{{ agent.sname|default:'' }}" required>
+                </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div class="form-group">
+                    <label for="identifier">Identifier</label>
+                    <input type="text" id="identifier" name="identifier" class="form-control" 
+                           value="{{ agent.identifier|default:'' }}">
+                </div>
+                
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select id="status" name="status" class="form-control">
+                        {% for status in status_choices %}
+                            <option value="{{ status }}" 
+                                    {% if agent.status == status or not agent and status == 'ins' %}selected{% endif %}>
+                                {% if status == 'ins' %}In Service
+                                {% elif status == 'sus' %}Suspended
+                                {% elif status == 'oos' %}Out of Service
+                                {% else %}{{ status|title }}{% endif %}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div class="form-group">
+                    <label for="centre_name">Centre *</label>
+                    <select id="centre_name" name="centre_name" class="form-control" required>
+                        <option value="">Select a centre...</option>
+                        {% for centre in centres %}
+                            <option value="{{ centre.name }}" 
+                                    {% if current_centre_name == centre.name %}selected{% endif %}>
+                                {{ centre.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="language_name">Language *</label>
+                    <select id="language_name" name="language_name" class="form-control" required>
+                        <option value="">Select a language...</option>
+                        {% for language in languages %}
+                            <option value="{{ language.name }}" 
+                                    {% if current_language_name == language.name %}selected{% endif %}>
+                                {{ language.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" class="form-control" 
+                           value="{{ agent.email|default:'' }}">
+                </div>
+                
+                <div class="form-group">
+                    <label for="mobile">Mobile</label>
+                    <input type="text" id="mobile" name="mobile" class="form-control" 
+                           value="{{ agent.mobile|default:'' }}">
+                </div>
+            </div>
+            
+            <div style="margin-top: 20px; display: flex; gap: 10px;">
+                <button type="submit" class="btn btn-success">
+                    {% if agent %}Update Agent{% else %}Create Agent{% endif %}
+                </button>
+                <a href="{% url 'thedjangolook:agent_list' %}" class="btn btn-warning">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

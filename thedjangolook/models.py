@@ -9,7 +9,6 @@ from django.db import models
 
 
 class Administrators(models.Model):
-    id = models.AutoField(primary_key=True)
     centreid = models.IntegerField(blank=True, null=True)
     name = models.CharField(max_length=32, blank=True, null=True)
     username = models.CharField(max_length=32, blank=True, null=True)

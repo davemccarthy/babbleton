@@ -14,7 +14,20 @@
     </a>
 </div>
 
-
+<!-- Messages -->
+{% if messages %}
+<div class="row mb-4">
+    <div class="col-12">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {% if message.tags == 'success' %}✅{% elif message.tags == 'error' %}⚠️{% else %}ℹ️{% endif %}
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
 
 <!-- Centres Table -->
 <div class="row">
@@ -76,10 +89,10 @@
                                 </td>
                                 <td>
                                     <div class="btn-group btn-group-sm">
-                                        <a href="{% url 'admin-centres-edit' centre.id %}" class="btn btn-outline-primary" title="Edit">
+                                        <a href="{% url 'admin-centres-edit' centre.id %}" class="btn btn-outline-warning" title="Edit Centre">
                                             ✏️
                                         </a>
-                                        <a href="{% url 'admin-centres-delete' centre.id %}" class="btn btn-outline-danger" title="Delete">
+                                        <a href="{% url 'admin-centres-delete' centre.id %}" class="btn btn-outline-danger" title="Delete Centre">
                                             🗑️
                                         </a>
                                     </div>
@@ -109,19 +122,4 @@
         </div>
     </div>
 </div>
-
-<!-- Messages -->
-{% if messages %}
-<div class="row mt-4">
-    <div class="col-12">
-        {% for message in messages %}
-        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-            {% if message.tags == 'success' %}✅{% elif message.tags == 'error' %}⚠️{% else %}ℹ️{% endif %}
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-        {% endfor %}
-    </div>
-</div>
-{% endif %}
 {% endblock %}
